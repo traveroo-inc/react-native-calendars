@@ -79,6 +79,9 @@ class CalendarHeader extends Component {
     if (nextProps.disableArrowRight !== this.props.disableArrowRight) {
       return true;
     }
+    if (nextProps.hideArrows !== this.props.hideArrows) {
+      return true;
+    }
     return false;
   }
 
@@ -122,10 +125,12 @@ class CalendarHeader extends Component {
   }
 
   renderHeader = () => {
-    const {renderHeader, month, monthFormat, testID} = this.props;
+    const {renderHeader, month, monthFormat, testID, hideHeader} = this.props;
     const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
-
-    if (renderHeader) {
+    if (hideHeader) {
+      return null
+    } 
+    else if (renderHeader) {
       return renderHeader(month);
     }
 

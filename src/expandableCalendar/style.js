@@ -1,5 +1,7 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
+import ifIphoneX from 'react-native-iphone-x-helper'
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 
 const commons = require('./commons');
@@ -11,11 +13,12 @@ export default function styleConstructor(theme = {}) {
   return StyleSheet.create({
     containerShadow: {
       backgroundColor: appStyle.calendarBackground,
+      paddingTop: heightPercentageToDP(6),
       ...Platform.select({
         ios: {
           shadowColor: '#858F96',
-          shadowOpacity: 0.25,
-          shadowRadius: 10,
+          shadowOpacity: 0.10,
+          shadowRadius: 8,
           shadowOffset: {height: 2, width: 0},
           zIndex: 99
         },
@@ -51,7 +54,6 @@ export default function styleConstructor(theme = {}) {
       paddingTop: 24, // 8
       paddingBottom: 8,
       paddingLeft: 20,
-      paddingRight: 20,
       backgroundColor: appStyle.calendarBackground,
       textAlign: 'left',
       textTransform: 'uppercase'
@@ -103,8 +105,7 @@ export default function styleConstructor(theme = {}) {
       color: appStyle.textSectionTitleColor
     },
     arrowImage: {
-      tintColor: appStyle.arrowColor,
-      transform: commons.isRTL ? [{scaleX: -1}] : undefined
+      tintColor: appStyle.arrowColor
     },
     todayButtonContainer: {
       alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',

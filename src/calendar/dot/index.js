@@ -11,10 +11,6 @@ const Dot = ({theme, isMarked, isDisabled, dotColor, isToday, isSelected}) => {
   if (isMarked) {
     dotStyle.push(style.visibleDot);
 
-    if (isToday) {
-      dotStyle.push(style.todayDot);
-    }
-
     if (isDisabled) {
       dotStyle.push(style.disabledDot);
     }
@@ -25,6 +21,10 @@ const Dot = ({theme, isMarked, isDisabled, dotColor, isToday, isSelected}) => {
 
     if (dotColor) {
       dotStyle.push({backgroundColor: dotColor});
+    }
+
+    if (isToday) {
+      dotStyle.push(style.todayDot);
     }
   }
 

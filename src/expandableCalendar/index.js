@@ -30,7 +30,7 @@ const POSITIONS = {
 const SPEED = 20;
 const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120; // header + 1 week
-const WEEK_HEIGHT = 46;
+const WEEK_HEIGHT = 56;
 const KNOB_CONTAINER_HEIGHT = 20;
 const HEADER_HEIGHT = 68;
 const DAY_NAMES_PADDING = 24;
@@ -118,14 +118,9 @@ class ExpandableCalendar extends Component {
   }
 
   componentDidMount() {
-    if (AccessibilityInfo) {
-      if (AccessibilityInfo.isScreenReaderEnabled) {
-        AccessibilityInfo.isScreenReaderEnabled().then(this.handleScreenReaderStatus);
-      } else if (AccessibilityInfo.fetch) {
-        // Support for older RN versions
-        AccessibilityInfo.fetch().then(this.handleScreenReaderStatus);
-      }
-    }
+    AccessibilityInfo.isScreenReaderEnabled().then((screenReaderEnabled) => {
+      this.setState({screenReaderEnabled});
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -135,10 +130,6 @@ class ExpandableCalendar extends Component {
       this.scrollToDate(date);
     }
   }
-
-  handleScreenReaderStatus = (screenReaderEnabled) => {
-    this.setState({screenReaderEnabled});
-  };
 
   updateNativeStyles() {
     this.wrapper && this.wrapper.setNativeProps(this._wrapperStyles);
@@ -458,7 +449,7 @@ class ExpandableCalendar extends Component {
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View style={this.style.knobContainer} pointerEvents={'none'} testID={`${this.props.testID}-knob`}>
+      <View style={this.style.knobContainer} pointerEvents={'none'}>
         <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
@@ -473,7 +464,6 @@ class ExpandableCalendar extends Component {
       <Image
         source={direction === 'right' ? this.props.rightArrowImageSource : this.props.leftArrowImageSource}
         style={this.style.arrowImage}
-        testID={`${this.props.testID}-${direction}-arrow`}
       />
     );
   }
@@ -483,7 +473,6 @@ class ExpandableCalendar extends Component {
     const {deltaY, position, screenReaderEnabled} = this.state;
     const isOpen = position === POSITIONS.OPEN;
     const themeObject = Object.assign(this.headerStyleOverride, theme);
-
     return (
       <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, style]}>
         {screenReaderEnabled ?
@@ -513,8 +502,9 @@ class ExpandableCalendar extends Component {
               onVisibleMonthsChange={this.onVisibleMonthsChange}
               pagingEnabled
               scrollEnabled={isOpen}
+              hideArrows={isOpen ? false : true}
+              hideHeader={isOpen ? false : true}
               markedDates={this.getMarkedDates()}
-              hideArrows={this.shouldHideArrows()}
               onPressArrowLeft={this.onPressArrowLeft}
               onPressArrowRight={this.onPressArrowRight}
               hideExtraDays={!horizontal}
