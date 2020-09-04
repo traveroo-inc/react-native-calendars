@@ -12,33 +12,40 @@ export default function styleConstructor(theme = {}) {
   
   return StyleSheet.create({
     containerShadow: {
-      backgroundColor: appStyle.calendarBackground,
-      paddingTop: heightPercentageToDP(6),
-      ...Platform.select({
-        ios: {
-          shadowColor: '#858F96',
-          shadowOpacity: 0.10,
-          shadowRadius: 8,
-          shadowOffset: {height: 2, width: 0},
-          zIndex: 99
-        },
-        android: {
-          elevation: 3
-        }
-      })
+      backgroundColor: '#F4F4F4',
+      paddingTop: heightPercentageToDP(5),
+      // ...Platform.select({
+      //   ios: {
+      //     shadowColor: '#858F96',
+      //     shadowOpacity: 0.10,
+      //     shadowRadius: 8,
+      //     shadowOffset: {height: 2, width: 0},
+      //     zIndex: 99
+      //   },
+      //   android: {
+      //     elevation: 3
+      //   }
+      // })
     },
     container: {
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: '#F4F4F4',
     },
     knobContainer: {
       position: 'absolute',
       left: 0,
       right: 0,
       height: 24,
+      shadowColor: '#8386A3',
+      shadowOpacity: 0.10,
+      shadowRadius: 10,
+      shadowOffset: {height: 6, width: 0},
+      zIndex: 99,
       bottom: 0,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: 'white',
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
     },
     knob: {
       width: 40,
@@ -54,7 +61,7 @@ export default function styleConstructor(theme = {}) {
       paddingTop: 24, // 8
       paddingBottom: 8,
       paddingLeft: 20,
-      backgroundColor: appStyle.calendarBackground,
+      backgroundColor: 'black',
       textAlign: 'left',
       textTransform: 'uppercase'
     },
@@ -62,7 +69,7 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: '#F4F4F4'
     },
     headerTitle: {
       alignSelf: 'center',

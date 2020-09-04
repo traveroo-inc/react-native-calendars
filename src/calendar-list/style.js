@@ -28,7 +28,7 @@ export default function getStyle(theme={}) {
       left: 0, 
       right: 0, 
       top: 0, 
-      backgroundColor: appStyle.calendarBackground,
+      backgroundColor: '#F4F4F4',
       paddingLeft: 15,
       paddingRight: 15
     },

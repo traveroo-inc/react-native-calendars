@@ -17,7 +17,8 @@ export default function(theme={}) {
       // position: 'absolute',
     },
     headerContainer: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      backgroundColor: '#F4F4F4'
     },
     monthText: {
       fontSize: appStyle.textMonthFontSize,
