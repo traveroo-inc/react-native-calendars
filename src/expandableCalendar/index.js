@@ -20,6 +20,7 @@ import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
 import WeekCalendar from './weekCalendar';
 import Week from './week';
+import { Transitioning, Transition } from 'react-native-reanimated';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -105,7 +106,19 @@ class ExpandableCalendar extends Component {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT),
       position: props.initialPosition,
-      screenReaderEnabled: false
+      screenReaderEnabled: false,
+      transition: (
+        <Transition.Sequence>
+          <Transition.Together>
+            <Transition.In
+              propagation="top"
+              type="scale"
+              durationMs={200}
+              interpolation="easeOut"
+            />
+          </Transition.Together>
+        </Transition.Sequence>
+      ),
     };
 
     this.panResponder = PanResponder.create({
@@ -272,6 +285,7 @@ class ExpandableCalendar extends Component {
   handlePanResponderEnd = () => {
     this._height = this._wrapperStyles.style.height;
     this.bounceToPosition();
+    
   };
 
   /** Animated */
@@ -294,7 +308,9 @@ class ExpandableCalendar extends Component {
         bounciness: BOUNCINESS,
         useNativeDriver: false
       }).start(this.onAnimatedFinished);
-
+      if (this.calendarRef) {
+        this.calendarRef.animateNextTransition();
+      }
       this.setPosition();
       this.closeHeader(isOpen);
       this.resetWeekCalendarOpacity(isOpen);
@@ -310,6 +326,9 @@ class ExpandableCalendar extends Component {
   setPosition() {
     const isClosed = this._height === this.closedHeight;
     this.setState({position: isClosed ? POSITIONS.CLOSED : POSITIONS.OPEN});
+    if (this.calendarRef) {
+      this.calendarRef.animateNextTransition();
+    }
   }
 
   resetWeekCalendarOpacity(isOpen) {
@@ -329,6 +348,9 @@ class ExpandableCalendar extends Component {
         bounciness: 1,
         useNativeDriver: false
       }).start();
+    }
+    if (this.calendarRef) {
+      this.calendarRef.animateNextTransition();
     }
   }
 
@@ -449,7 +471,7 @@ class ExpandableCalendar extends Component {
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View  style={this.style.knobContainer} hitSlop={{ bottom: 80}} pointerEvents={'auto'}>
+      <View  style={this.style.knobContainer} hitSlop={{ bottom: 80}} pointerEvents={'none'}>
         <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
@@ -474,6 +496,10 @@ class ExpandableCalendar extends Component {
     const isOpen = position === POSITIONS.OPEN;
     const themeObject = Object.assign(this.headerStyleOverride, theme);
     return (
+      <Transitioning.View
+      ref={(calendarRef) => (this.calendarRef = calendarRef)}
+      transition={this.state.transition}
+    >
       <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, style]}>
         {screenReaderEnabled ?
           <Calendar
@@ -517,6 +543,7 @@ class ExpandableCalendar extends Component {
           </Animated.View>
         }
       </View>
+      </Transitioning.View>
     );
   }
 }
