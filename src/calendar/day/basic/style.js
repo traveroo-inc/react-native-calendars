@@ -1,5 +1,6 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 const STYLESHEET_ID = 'stylesheet.day.basic';
 
@@ -7,12 +8,19 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     base: {
-      width: 32,
-      height: 32,
-      alignItems: 'center'
+      ...ifIphoneX({
+        width: 40,
+        height: 40,
+      },{
+        width: 32,
+        height: 32,
+      } ),
+
+      alignItems: 'center',
+      borderRadius: 10,
+      justifyContent: 'center',
     },
     text: {
-      marginTop: Platform.OS === 'android' ? 4 : 6,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
@@ -21,15 +29,15 @@ export default function styleConstructor(theme={}) {
       ...appStyle.textDayStyle
     },
     alignedText: {
-      marginTop: Platform.OS === 'android' ? 4 : 6
+      marginTop: 0
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
+      borderRadius: 10
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
-      borderRadius: 16
+      borderRadius: 10
     },
     todayText: {
       color: appStyle.todayTextColor
@@ -43,7 +51,7 @@ export default function styleConstructor(theme={}) {
     dot: {
       width: 4,
       height: 4,
-      marginTop: 1,
+      // marginTop: 1,
       borderRadius: 2,
       opacity: 0,
       ...appStyle.dotStyle

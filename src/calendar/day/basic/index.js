@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, Platform} from 'react-native';
 import PropTypes from 'prop-types';
 import {shouldUpdate} from '../../../component-updater';
 import Dot from '../../dot';
 import styleConstructor from './style';
+import { BorderlessButton, BaseButton } from 'react-native-gesture-handler';
+
+const Button = Platform.OS === 'android' ? BaseButton : BorderlessButton
 
 
 class Day extends Component {
@@ -92,10 +95,12 @@ class Day extends Component {
     }
 
     return (
-      <TouchableOpacity
+      <Button
+      rippleColor='grey'
         testID={this.props.testID}
         style={containerStyle}
         onPress={this.onDayPress}
+        hitSlop={{ top: 10, left: 10, right: 10, bottom: 10}}
         onLongPress={this.onDayLongPress}
         activeOpacity={activeOpacity}
         disabled={shouldDisableTouchEvent}
@@ -111,7 +116,7 @@ class Day extends Component {
           isToday={isToday}
           isDisabled={isDisabled}
         />
-      </TouchableOpacity>
+      </Button>
     );
   }
 }

@@ -1,6 +1,6 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
-import ifIphoneX from 'react-native-iphone-x-helper'
+import { ifIphoneX } from 'react-native-iphone-x-helper'
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 
@@ -13,19 +13,10 @@ export default function styleConstructor(theme = {}) {
   return StyleSheet.create({
     containerShadow: {
       backgroundColor: '#F4F4F4',
-      paddingTop: heightPercentageToDP(5),
-      // ...Platform.select({
-      //   ios: {
-      //     shadowColor: '#858F96',
-      //     shadowOpacity: 0.10,
-      //     shadowRadius: 8,
-      //     shadowOffset: {height: 2, width: 0},
-      //     zIndex: 99
-      //   },
-      //   android: {
-      //     elevation: 3
-      //   }
-      // })
+      ...ifIphoneX({
+        paddingTop: heightPercentageToDP(7),
+        
+      }, { paddingTop: heightPercentageToDP(4.5) })
     },
     container: {
       backgroundColor: '#F4F4F4',
@@ -34,13 +25,17 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      height: 24,
+      height: 32,
       shadowColor: '#8386A3',
       shadowOpacity: 0.10,
       shadowRadius: 10,
       shadowOffset: {height: 6, width: 0},
       zIndex: 99,
-      bottom: 0,
+      ...ifIphoneX({
+        bottom: -heightPercentageToDP(1.9),
+      }, {
+        bottom: -heightPercentageToDP(2.1),
+      }),
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'white',
@@ -131,13 +126,13 @@ export default function styleConstructor(theme = {}) {
       backgroundColor: 'white',
       ...Platform.select({
         ios: {
-          shadowColor: '#79838A',
+          shadowColor: '#A38F83',
           shadowOpacity: 0.3,
-          shadowRadius: 14,
+          shadowRadius: 10,
           shadowOffset: {height: 6, width: 0}
         },
         android: {
-          elevation: 6
+          elevation: 5
         }
       })
     },

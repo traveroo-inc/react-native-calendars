@@ -449,7 +449,7 @@ class ExpandableCalendar extends Component {
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View style={this.style.knobContainer} pointerEvents={'none'}>
+      <View  style={this.style.knobContainer} hitSlop={{ bottom: 80}} pointerEvents={'auto'}>
         <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
